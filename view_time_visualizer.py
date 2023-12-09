@@ -23,3 +23,20 @@ def draw_line_plot():
     # Save image and return fig
     fig.savefig('line_plot.png')
     return fig
+
+def draw_bar_plot():
+    # Copy and modify data for monthly bar plot
+    df_bar = df.copy()
+    df_bar['year'] = df_bar.index.year
+    df_bar['month'] = df_bar.index.month_name()
+    df_bar = df_bar.groupby(['year', 'month']).mean().unstack()
+
+    # Draw bar plot
+    fig = df_bar.plot(kind='bar', figsize=(15, 10)).get_figure()
+    plt.xlabel('Years')
+    plt.ylabel('Average Page Views')
+    plt.legend(title='Months', labels=[calendar.month_name[i] for i in range(1, 13)])
+
+    # Save image and return fig
+    fig.savefig('bar_plot.png')
+    return fig
