@@ -40,3 +40,30 @@ def draw_bar_plot():
     # Save image and return fig
     fig.savefig('bar_plot.png')
     return fig
+
+def draw_box_plot():
+    # Prepare data for box plots
+    df_box = df.copy()
+    df_box.reset_index(inplace=True)
+    df_box['year'] = [d.year for d in df_box.date]
+    df_box['month'] = [d.strftime('%b') for d in df_box.date]
+
+    # Draw box plots (using Seaborn)
+    fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(20, 10))
+    sns.boxplot(x='year', y='value', data=df_box, ax=ax[0])
+    sns.boxplot(x='month', y='value', data=df_box, ax=ax[1], order=[calendar.month_abbr[i] for i in range(1, 13)])
+
+    ax[0].set_title('Year-wise Box Plot (Trend)')
+    ax[1].set_title('Month-wise Box Plot (Seasonality)')
+    ax[0].set_xlabel('Year')
+    ax[0].set_ylabel('Page Views')
+    ax[1].set_xlabel('Month')
+    ax[1].set_ylabel('Page Views')
+
+    # Save image and return fig
+    fig.savefig('box_plot.png')
+    return fig
+
+draw_line_plot()
+draw_bar_plot()
+draw_box_plot()
